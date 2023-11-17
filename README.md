@@ -1,5 +1,5 @@
-## 프로젝트 주제 : MyCommunity
-
+## 프로젝트 주제 : ReadingCommunity
+독서인들이 자유롭게 책을 소개하고 오프라인 모임을 가질 수 있는 커뮤니티 애플리케이션
 (제로베이스 백엔드 15기 5개월차 개인 프로젝트)
 
 ### 주요 기능
@@ -9,17 +9,20 @@
 오프라인 독서 모임을 주최하거나 참여할 수 있습니다. 모임 후기를 게시판 형식으로 남길 수 있습니다.
 
 ## 프로젝트 구조
+![프로젝트 구조](https://github.com/YongWanJin/MyCommunity/assets/85136560/e7ee03a7-39ad-46e8-ac3f-a89cb9ef6fed)
+(추후에 고도화 예정)
 
 ## ERD
+![ERD](https://github.com/YongWanJin/MyCommunity/assets/85136560/09cacec3-1955-4b44-ae86-88bc260b912b)
 
 ## 사용 기술 스택
 * Java
 * SpringBoot
 * JPA
 * MySQL
+* 그 외 추가 예정
 
-
-## 프로젝트 기능
+## 프로젝트 세부 기능
 
 ### 회원 가입 및 로그인
 

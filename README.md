@@ -13,7 +13,7 @@
 
 ## ERD
 ![ERD3](https://github.com/YongWanJin/MyCommunity/assets/85136560/cf08501c-0b7e-4cac-980f-679eec056806)
-(필수 요구사항에 해당하는 테이블만 작성)
+(필수 요구사항에 해당하는 테이블만 작성)  
 (추가 요구사항 구현 및 고도화를 진행할 때 갱신될 예정)
 
 ## 사용 기술 스택

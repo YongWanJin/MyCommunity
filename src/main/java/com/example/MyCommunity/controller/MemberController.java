@@ -29,8 +29,9 @@ public class MemberController {
 
   /**로그인 요청 - 토큰을 리턴한다.*/
   @PostMapping("/signin")
-  public ResponseEntity<String> singin() {
-    return ResponseEntity.ok().body("token");
+  public ResponseEntity<String> singin(@RequestBody MemberDto.SignIn request) {
+    String token = this.memberService.login(request);
+    return ResponseEntity.ok().body(token);
   }
 
   @PostMapping("/test")

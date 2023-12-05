@@ -3,6 +3,7 @@ package com.example.MyCommunity.persist.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +34,7 @@ public class MemberEntity implements UserDetails {
 
   /** 이메일 */
   @Column(name = "EMAIL")
+  @Email
   private String email;
 
   /** 비밀번호 */
@@ -46,6 +48,18 @@ public class MemberEntity implements UserDetails {
   /** 가입 날짜 */
   @Column(name = "CREATED_AT")
   private LocalDateTime createdAt;
+
+  /** 회원 정보 수정 날짜*/
+  @Column(name = "UPDATED_AT")
+  private LocalDateTime updatedAt;
+
+  /** 탈퇴 여부 */
+  @Column(name = "IS_ENABLED")
+  private boolean isEnabled;
+
+  /** 탈퇴한 날짜 */
+  @Column(name = "LEFT_AT")
+  private LocalDateTime leftAt;
 
   /** 권한 */
   @Column(name = "ROLE")
@@ -86,6 +100,6 @@ public class MemberEntity implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return isEnabled;
   }
 }

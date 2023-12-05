@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /** 회원 관련 Repository*/
 public interface MemberRepository extends JpaRepository<MemberEntity, String> {
   Optional<MemberEntity> findByUserId(String userId);
+  Optional<MemberEntity> findByEmail(String email);
+  Optional<MemberEntity> findByName(String name);
 }

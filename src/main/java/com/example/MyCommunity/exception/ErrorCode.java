@@ -7,15 +7,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
-  USERID_DUPLICATED(HttpStatus.CONFLICT, ""),
+  USERNAME_DUPLICATED(HttpStatus.CONFLICT, ""),
   USERID_NOTFOUND(HttpStatus.NOT_FOUND, ""),
-  USERID_INVALID(HttpStatus.CONFLICT, ""),
-  INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, ""),
-  PASSWORD_NOT_CHANGED(HttpStatus.CONFLICT, ""),
-  PASSWORD_NOT_CONFIRM(HttpStatus.CONFLICT, ""),
-  EMAIL_DUPLICATED(HttpStatus.CONFLICT, ""),
-  NAME_DUPLICATED(HttpStatus.CONFLICT, "")
-  ;
+  INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "");
 
   private HttpStatus httpStatus;
   private String message;

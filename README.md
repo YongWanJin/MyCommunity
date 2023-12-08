@@ -12,7 +12,7 @@
 (추후에 고도화 예정)
 
 ## ERD
-![ERD3](https://github.com/YongWanJin/MyCommunity/assets/85136560/cf08501c-0b7e-4cac-980f-679eec056806)
+![ERD4](https://github.com/YongWanJin/MyCommunity/assets/85136560/32c14b3f-e295-449a-a05d-6d0b99bedb22)
 (필수 요구사항에 해당하는 테이블만 작성)  
 (추가 요구사항 구현 및 고도화를 진행할 때 갱신될 예정)
 

@@ -1,9 +1,15 @@
 package com.example.MyCommunity.controller;
 
+import com.example.MyCommunity.dto.reviewDto.Review;
+import com.example.MyCommunity.persist.entity.ReviewEntity;
+import com.example.MyCommunity.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/reviews")
 public class ReviewController {
 
-  /** 새로운 게시글 등록 */
-  @PostMapping
-  public ResponseEntity<String> writeReview(){
-    return ResponseEntity.ok().body("리뷰 게시글 등록 완료(테스트)");
+  private final ReviewService reviewService;
+
+  /** 새로운 후기 게시글 등록 */
+  @PostMapping("/posts")
+  public ResponseEntity<Review.Response> writeReview(@RequestBody @Valid Review.Request request, Authentication authentication){
+    Review.Response result = reviewService.writeReview(request, authentication);
+    return ResponseEntity.ok().body(result);
   }
 }

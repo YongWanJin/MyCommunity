@@ -53,7 +53,8 @@ public class MemberEntity implements UserDetails {
   @Column(name = "UPDATED_AT")
   private LocalDateTime updatedAt;
 
-  /** 탈퇴 여부 */
+  /** 활성화 여부 */
+  // true : 활성화, false : 비활성화(탈퇴한 회원)
   @Column(name = "IS_ENABLED")
   private boolean isEnabled;
 

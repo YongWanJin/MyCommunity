@@ -111,7 +111,8 @@ public class MemberService implements UserDetailsService {
     // # 토큰 생성
     String token = JwtUtil.createJwtToken(selectedMember.getUserId(), secretKey, expiredAtMs);
 
-    // # 레디스에 등록(로그인 중인지 확인하는 용도)
+    // # 레디스 캐시 서버에 등록(현재 토큰이 사용 가능한지 확인하는 용도)
+    // 작성중
 
     // # 토큰 발행
     return token;
@@ -192,7 +193,8 @@ public class MemberService implements UserDetailsService {
     // 탈퇴한 회원과 신규 회원의 아이디가 동일할 경우를 피하기 위해서
     // 탈퇴한 회원을 DB에서 완전히 삭제하지 않고, 계정 활성화 여부만 체크한다.
     // (탈퇴한 회원과 신규 회원의 아이디가 같을 경우,
-    // 예전 게시글들 중 탈퇴한 회원이 작성한 글인지 신규 회원이 작성한 글인지 구분할 수 없는 경우가
+    // 예전 게시글들 중 탈퇴한 회원이 작성한 글인지
+    // 중복된 아이디로 가입한 신규 회원이 작성한 글인지 구분할 수 없는 경우가
     // 발생할 수 있기 때문이다.)
 
     String inputPassword = request.getPassword();
@@ -207,6 +209,8 @@ public class MemberService implements UserDetailsService {
     // # 탈퇴 적용
     MemberEntity curMember = memberRepository.findByUserId(userDetails.getUsername())
         .orElseThrow(() ->new AppException(ErrorCode.USERID_NOTFOUND, "유효한 사용자가 아닙니다. 다시 로그인해주십시오."));
+    // 필드값 isEnabled를 false로 변환
+    // (이때 @Setter로 자동 지정된 메서드 이름은 setIsEnabled가 아닌 setEnabled이다.)
     curMember.setEnabled(false);
     curMember.setLeftAt(LocalDateTime.now());
     this.memberRepository.save(curMember);

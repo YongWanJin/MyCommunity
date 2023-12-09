@@ -1,16 +1,18 @@
 package com.example.MyCommunity.service;
 
-import com.example.MyCommunity.dto.reviewDto.Review;
+import com.example.MyCommunity.dto.reviewDto.UpdateReview;
+import com.example.MyCommunity.dto.reviewDto.UpdateReview.Request;
+import com.example.MyCommunity.dto.reviewDto.WriteReview;
 import com.example.MyCommunity.exception.AppException;
 import com.example.MyCommunity.exception.ErrorCode;
 import com.example.MyCommunity.persist.MemberRepository;
 import com.example.MyCommunity.persist.ReviewRepository;
 import com.example.MyCommunity.persist.entity.MemberEntity;
 import com.example.MyCommunity.persist.entity.ReviewEntity;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,23 +23,19 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
   /** 게시글 작성 */
-  public Review.Response writeReview(Review.Request request, Authentication authentication) throws UsernameNotFoundException  {
+  public WriteReview.Response writeReview(WriteReview.Request request, Authentication authentication) {
 
-    // # 현재 사용자의 엔티티를 Authentication과 UserDetails를 이용하여 가져온다.
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    String userId = userDetails.getUsername();
-    MemberEntity memberEntity = memberRepository.findByUserId(userId)
+    // # 현재 사용자의 엔티티(memberEntity)를 가져온다.
+    // (ReviewEntity는 MemberEntity를 참조하고 있다.
+    // 따라서 ReviewEntity를 생성하기 위해서는 MemberEntity가 필요하다.)
+    MemberEntity memberEntity = memberRepository.findByUserId(this.getCurrentUserId(authentication))
         .orElseThrow(()-> new AppException(ErrorCode.USERID_NOTFOUND, "유효하지 않은 사용자입니다."));
 
-    // # 게시글 저장 및 반환
+    // # 게시글 저장
     ReviewEntity result = reviewRepository.save(request.toEntity(memberEntity));
-    return getResponse(result);
 
-  }
-
-  /** 게시글이 성공적으로 올라온 결과를 반환하는 메서드*/
-  private Review.Response getResponse(ReviewEntity result){
-    return Review.Response
+    // # 결과 반환
+    return WriteReview.Response
         .builder()
         .reviewId(result.getReviewId())
         .title(result.getTitle())
@@ -46,6 +44,49 @@ public class ReviewService {
         .updatedAt(result.getUpdatedAt())
         .view(result.getView())
         .userId(result.getMember().getUserId())
+        .name(result.getMember().getName())
         .build();
+
+  }
+
+  /** 게시글 수정 */
+  public UpdateReview.Response updateReview(UpdateReview.Request request, Authentication authentication) {
+
+    // # 수정하고자하는 게시글이 존재하는지 reviewId를 통해 찾기
+    ReviewEntity reviewEntity = reviewRepository.findByReviewId(request.getReviewId())
+        .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND,
+            request.getReviewId() + " 해당 게시글은 존재하지 않습니다."));
+
+    // # 수정할 게시글의 글쓴이와 현재 접속중인 유저의 아이디가 일치하는지 확인
+    String authorId = reviewEntity.getMember().getUserId();
+    String curUserId = this.getCurrentUserId(authentication);
+    if(!authorId.equals(curUserId)){
+      throw new AppException(ErrorCode.USERID_INVALID, "해당 게시글을 수정할 권한이 없습니다.");
+    }
+
+    // # 게시글 수정
+    reviewEntity.setTitle(request.getTitle());
+    reviewEntity.setContent(request.getContent());
+    ReviewEntity result = reviewRepository.save(reviewEntity);
+
+    // # 결과 반환
+    return UpdateReview.Response
+        .builder()
+        .reviewId(result.getReviewId())
+        .title(result.getTitle())
+        .content(result.getContent())
+        .createdAt(result.getCreatedAt())
+        .updatedAt(LocalDateTime.now())
+        .view(result.getView())
+        .userId(result.getMember().getUserId())
+        .name(result.getMember().getName())
+        .build();
+  }
+
+  /** 현재 사용자의 아이디를 가져오는 메서드 */
+  private String getCurrentUserId(Authentication authentication){
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    String userId = userDetails.getUsername();
+    return userId;
   }
 }

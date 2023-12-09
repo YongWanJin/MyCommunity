@@ -14,7 +14,8 @@ public enum ErrorCode {
   PASSWORD_NOT_CHANGED(HttpStatus.CONFLICT, ""),
   PASSWORD_NOT_CONFIRM(HttpStatus.CONFLICT, ""),
   EMAIL_DUPLICATED(HttpStatus.CONFLICT, ""),
-  NAME_DUPLICATED(HttpStatus.CONFLICT, "")
+  NAME_DUPLICATED(HttpStatus.CONFLICT, ""),
+  REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "")
   ;
 
   private HttpStatus httpStatus;

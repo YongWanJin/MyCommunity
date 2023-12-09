@@ -1,5 +1,6 @@
 package com.example.MyCommunity.controller;
 
+import com.example.MyCommunity.dto.reviewDto.DeleteReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview;
 import com.example.MyCommunity.dto.reviewDto.WriteReview;
 import com.example.MyCommunity.persist.entity.ReviewEntity;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +42,11 @@ public class ReviewController {
   }
 
   /** 게시글 삭제 */
+  @DeleteMapping("/posts")
+  public ResponseEntity<String> deleteReview(@RequestBody @Valid DeleteReview.Request request, Authentication authentication){
+    reviewService.deleteReview(request, authentication);
+    return ResponseEntity.ok().body("게시글 삭제가 완료되었습니다.");
+  }
 
   /** 게시글 열람 (한 포스팅) */
 

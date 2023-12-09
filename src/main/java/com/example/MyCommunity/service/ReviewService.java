@@ -1,5 +1,8 @@
 package com.example.MyCommunity.service;
 
+import com.example.MyCommunity.dto.reviewDto.ReadReview;
+import com.example.MyCommunity.service.aop.AuthService;
+import com.example.MyCommunity.dto.reviewDto.DeleteReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview.Request;
 import com.example.MyCommunity.dto.reviewDto.WriteReview;
@@ -21,6 +24,7 @@ public class ReviewService {
 
   private final MemberRepository memberRepository;
   private final ReviewRepository reviewRepository;
+  private final AuthService authService; // [질문] AOP 관점 코딩... 이렇게 하는 것이 맞나요??
 
   /** 게시글 작성 */
   public WriteReview.Response writeReview(WriteReview.Request request, Authentication authentication) {
@@ -28,7 +32,7 @@ public class ReviewService {
     // # 현재 사용자의 엔티티(memberEntity)를 가져온다.
     // (ReviewEntity는 MemberEntity를 참조하고 있다.
     // 따라서 ReviewEntity를 생성하기 위해서는 MemberEntity가 필요하다.)
-    MemberEntity memberEntity = memberRepository.findByUserId(this.getCurrentUserId(authentication))
+    MemberEntity memberEntity = memberRepository.findByUserId(authService.getCurrentUserId(authentication))
         .orElseThrow(()-> new AppException(ErrorCode.USERID_NOTFOUND, "유효하지 않은 사용자입니다."));
 
     // # 게시글 저장
@@ -53,13 +57,15 @@ public class ReviewService {
   public UpdateReview.Response updateReview(UpdateReview.Request request, Authentication authentication) {
 
     // # 수정하고자하는 게시글이 존재하는지 reviewId를 통해 찾기
+    // !! 부가기능 리팩토링 할것
     ReviewEntity reviewEntity = reviewRepository.findByReviewId(request.getReviewId())
         .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND,
             request.getReviewId() + " 해당 게시글은 존재하지 않습니다."));
 
     // # 수정할 게시글의 글쓴이와 현재 접속중인 유저의 아이디가 일치하는지 확인
+    // !! 부가기능 리팩토링 할것
     String authorId = reviewEntity.getMember().getUserId();
-    String curUserId = this.getCurrentUserId(authentication);
+    String curUserId = authService.getCurrentUserId(authentication);
     if(!authorId.equals(curUserId)){
       throw new AppException(ErrorCode.USERID_INVALID, "해당 게시글을 수정할 권한이 없습니다.");
     }
@@ -83,10 +89,30 @@ public class ReviewService {
         .build();
   }
 
-  /** 현재 사용자의 아이디를 가져오는 메서드 */
-  private String getCurrentUserId(Authentication authentication){
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    String userId = userDetails.getUsername();
-    return userId;
+  /** 게시글 삭제 */
+  public void deleteReview(DeleteReview.Request request, Authentication authentication) {
+
+    // # 삭제하고자하는 게시글이 존재하는지 reviewId를 통해 찾기
+    // !! 리팩토링 할것
+    ReviewEntity reviewEntity = reviewRepository.findByReviewId(request.getReviewId())
+        .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND,
+            request.getReviewId() + " 해당 게시글은 존재하지 않습니다."));
+
+    // # 삭제할 게시글의 글쓴이와 현재 접속중인 유저의 아이디가 일치하는지 확인
+    // !! 부가기능 리팩토링 할것
+    String authorId = reviewEntity.getMember().getUserId();
+    String curUserId = authService.getCurrentUserId(authentication);
+    if(!authorId.equals(curUserId)){
+      throw new AppException(ErrorCode.USERID_INVALID, "해당 게시글을 삭제할 권한이 없습니다.");
+    }
+
+    // # 게시글 삭제
+    reviewRepository.delete(reviewEntity);
   }
+
+  /** 게시글 열람 (1개) */
+//  public ReadReview.Response readReview(ReadReview.Request request){
+//    return null;
+//  }
+
 }

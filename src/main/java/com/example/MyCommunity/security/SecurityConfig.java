@@ -32,7 +32,7 @@ public class SecurityConfig{
         // # 페이지 인증 설정
         .authorizeHttpRequests(requests -> requests
             // * 다음 페이지는 인증 필요 없음(누구나 인증 없이 접근 가능)
-            .requestMatchers("/auth/signup", "auth/signin").permitAll()
+            .requestMatchers("/auth/signup", "auth/signin", "reviews/reading").permitAll()
             // * 나머지 페이지는 인증 필요
             .anyRequest().authenticated())
         // # 토큰 필터링 적용

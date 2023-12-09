@@ -1,10 +1,10 @@
 package com.example.MyCommunity.service;
 
 import com.example.MyCommunity.dto.reviewDto.ReadReview;
+import com.example.MyCommunity.dto.reviewDto.ReadReview.Response;
 import com.example.MyCommunity.service.aop.AuthService;
 import com.example.MyCommunity.dto.reviewDto.DeleteReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview;
-import com.example.MyCommunity.dto.reviewDto.UpdateReview.Request;
 import com.example.MyCommunity.dto.reviewDto.WriteReview;
 import com.example.MyCommunity.exception.AppException;
 import com.example.MyCommunity.exception.ErrorCode;
@@ -15,7 +15,6 @@ import com.example.MyCommunity.persist.entity.ReviewEntity;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -111,8 +110,32 @@ public class ReviewService {
   }
 
   /** 게시글 열람 (1개) */
-//  public ReadReview.Response readReview(ReadReview.Request request){
-//    return null;
-//  }
+  public Response readReview(ReadReview.Request request) {
+    // # 삭제하고자하는 게시글이 존재하는지 reviewId를 통해 찾기
+    // !! 리팩토링 할것
+    ReviewEntity reviewEntity = reviewRepository.findByReviewId(request.getReviewId())
+        .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND,
+            request.getReviewId() + " 해당 게시글은 존재하지 않습니다."));
 
+    // # 조회수 1 증가
+    // !! [문제점] 트렌젝션 관리를 어떻게 하면 좋을까?
+    // 만약, 해당 게시글이 폭발적인 인기를 얻는 바람에
+    // 수많은 사람들이 한꺼번에 하나의 게시글을 열람할 때,
+    // 동시에 폭주하는 요청을 어떻게 처리할 것인가?
+    reviewEntity.setView(reviewEntity.getView()+1);
+    ReviewEntity result = reviewRepository.save(reviewEntity);
+
+    // # 게시글 열람
+    return ReadReview.Response
+        .builder()
+        .reviewId(result.getReviewId())
+        .title(result.getTitle())
+        .content(result.getContent())
+        .createdAt(result.getCreatedAt())
+        .updatedAt(LocalDateTime.now())
+        .view(result.getView())
+        .userId(result.getMember().getUserId())
+        .name(result.getMember().getName())
+        .build();
+  }
 }

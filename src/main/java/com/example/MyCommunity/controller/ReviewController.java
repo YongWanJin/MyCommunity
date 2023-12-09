@@ -1,6 +1,7 @@
 package com.example.MyCommunity.controller;
 
 import com.example.MyCommunity.dto.reviewDto.DeleteReview;
+import com.example.MyCommunity.dto.reviewDto.ReadReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview;
 import com.example.MyCommunity.dto.reviewDto.WriteReview;
 import com.example.MyCommunity.persist.entity.ReviewEntity;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +51,10 @@ public class ReviewController {
   }
 
   /** 게시글 열람 (한 포스팅) */
+  @GetMapping("/reading") // [질문] '열람', '조회' 등 명사인데 행위를 나타내는 것들도 url에 사용할 수 있나요?
+  public ResponseEntity<ReadReview.Response> readReview(@RequestBody @Valid ReadReview.Request request){
+    ReadReview.Response result = reviewService.readReview(request);
+    return ResponseEntity.ok().body(result);
+  }
 
 }

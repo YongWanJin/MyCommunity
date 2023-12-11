@@ -25,6 +25,10 @@ public class SignUp {
     private String name;
     /** 가입 날짜 */
     private LocalDateTime createdAt;
+    /** 가장 최근에 회원 정보를 수정한 날짜 */
+    private LocalDateTime updatedAt;
+    /** 활동 여부 (true : 활동 계정, false : 탈퇴 계쩡)*/
+    private boolean isEnabled;
     /** 권한 */
     private String role;
 
@@ -36,6 +40,8 @@ public class SignUp {
           .password(this.password)
           .name(this.name)
           .createdAt(LocalDateTime.now())
+          .updatedAt(LocalDateTime.now())
+          .isEnabled(true)
           .role(this.role)
           .build();
     }

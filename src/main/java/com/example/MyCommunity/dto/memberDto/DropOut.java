@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DropOut {
-  /** 회원 아이디 */
-  private String userId;
   /** 비밀번호 */
   private String password;
 }

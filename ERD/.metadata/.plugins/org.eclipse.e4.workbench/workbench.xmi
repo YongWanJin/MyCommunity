@@ -6,6 +6,9 @@
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
+    <persistedState key="show_in_time" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;show_in_time/>"/>
+    <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workingSets/>"/>
+    <persistedState key="aggregateWorkingSetId"/>
     <tags>topLevel</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="__OdGYoRBEe6OMrhjxHx5XQ" selectedElement="__OdGY4RBEe6OMrhjxHx5XQ" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="__OdGY4RBEe6OMrhjxHx5XQ" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_j8qm4YYHEe6BGa4boaJkFA">
@@ -315,8 +318,8 @@
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
         <tags>active</tags>
-        <children xsi:type="basic:Part" xmi:id="_GW1ToIg6Ee66aKTh2Cunww" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ERD3.exerd" iconURI="platform:/plugin/com.tomato.exerd.core/icon/common/erd_editor.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;ERD3.exerd&quot; partName=&quot;ERD3.exerd&quot; title=&quot;ERD3.exerd&quot; tooltip=&quot;C:\Users\whu72\OneDrive\&#xbc14;&#xd0d5; &#xd654;&#xba74;\Backend\_88_7_Community\MyCommunity\ERD\ERD3.exerd&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; uri=&quot;file:/C:/Users/whu72/OneDrive/&#xbc14;&#xd0d5;%20&#xd654;&#xba74;/Backend/_88_7_Community/MyCommunity/ERD/ERD3.exerd&quot;/>&#xD;&#xA;&lt;/editor>"/>
+        <children xsi:type="basic:Part" xmi:id="_GW1ToIg6Ee66aKTh2Cunww" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="ERD3.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)" iconURI="platform:/plugin/com.tomato.exerd.core/icon/common/erd_editor.gif" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;com.tomato.exerd.editor.DiagramEditor&quot; name=&quot;ERD3.exerd&quot; partName=&quot;ERD3.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)&quot; title=&quot;ERD3.exerd(&#xc77d;&#xae30; &#xc804;&#xc6a9;)&quot; tooltip=&quot;C:\Users\whu72\OneDrive\&#xbc14;&#xd0d5; &#xd654;&#xba74;\Backend\_88_7_Community\MyCommunity\ERD\ERD3.exerd&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.ide.FileStoreEditorInputFactory&quot; uri=&quot;file:/C:/Users/whu72/OneDrive/&#xbc14;&#xd0d5;%20&#xd654;&#xba74;/Backend/_88_7_Community/MyCommunity/ERD/ERD3.exerd&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>com.tomato.exerd.editor.DiagramEditor</tags>
@@ -530,7 +533,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__PRlwIRBEe6OMrhjxHx5XQ" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="___q9QIg5Ee66aKTh2Cunww" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="__Emm5IRBEe6OMrhjxHx5XQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_BFsx4JXHEe6yTO9iFEz2Gg" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="__Emm5IRBEe6OMrhjxHx5XQ"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__PRlwYRBEe6OMrhjxHx5XQ" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -558,7 +561,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__PRlyIRBEe6OMrhjxHx5XQ" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="___sLZ4g5Ee66aKTh2Cunww" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="__EmALYRBEe6OMrhjxHx5XQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_BFuABJXHEe6yTO9iFEz2Gg" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="__EmALYRBEe6OMrhjxHx5XQ"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="__PRlyYRBEe6OMrhjxHx5XQ" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>

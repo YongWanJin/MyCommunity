@@ -1,6 +1,7 @@
 package com.example.MyCommunity.security;
 
 
+import com.example.MyCommunity.aop.AuthAspect;
 import com.example.MyCommunity.service.MemberService;
 import com.sun.istack.NotNull;
 import io.jsonwebtoken.Claims;
@@ -22,6 +23,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
   private final MemberService memberService;
+  private final AuthAspect authAspect;
 
   /**시크릿 키*/
   @Value("${jwt.token.secretKey}")
@@ -70,13 +72,14 @@ public class JwtUtil {
   public Authentication getAutentication(String token) {
     // # 유저 아이디를 토큰으로부터 가져온 뒤,
     // 유저 정보(UserDetails 타입)를 가져온다.
-    UserDetails userDetails = this.memberService.loadUserByUsername(this.getUserId(token));
+    UserDetails userDetails = authAspect.loadUserByUsername(this.getUserId(token));
 
     // # 받아온 유저 정보(userDetails)를 스프링에서 지원해주는 형태의 토큰으로 변환, 리턴
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
   }
 
   /** 유저 아이디(username)을 토큰으로부터 가져옴*/
+  // 토큰의 Payload에 userName 키의 값이 바로 유저의 아이디이다.
   public String getUserId(String token){
     return this.parseClaims(token).get("userName").toString();
   }

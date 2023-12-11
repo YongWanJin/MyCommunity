@@ -1,8 +1,8 @@
 package com.example.MyCommunity.service;
 
+import com.example.MyCommunity.aop.AuthAspect;
 import com.example.MyCommunity.dto.reviewDto.ReadReview;
 import com.example.MyCommunity.dto.reviewDto.ReadReview.Response;
-import com.example.MyCommunity.service.aop.AuthService;
 import com.example.MyCommunity.dto.reviewDto.DeleteReview;
 import com.example.MyCommunity.dto.reviewDto.UpdateReview;
 import com.example.MyCommunity.dto.reviewDto.WriteReview;
@@ -15,6 +15,7 @@ import com.example.MyCommunity.persist.entity.ReviewEntity;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +24,7 @@ public class ReviewService {
 
   private final MemberRepository memberRepository;
   private final ReviewRepository reviewRepository;
-  private final AuthService authService; // [질문] AOP 관점 코딩... 이렇게 하는 것이 맞나요??
+  private final AuthAspect authAspect; // [질문] AOP 관점 코딩... 이렇게 하는 것이 맞나요??
 
   /** 게시글 작성 */
   public WriteReview.Response writeReview(WriteReview.Request request, Authentication authentication) {
@@ -31,8 +32,8 @@ public class ReviewService {
     // # 현재 사용자의 엔티티(memberEntity)를 가져온다.
     // (ReviewEntity는 MemberEntity를 참조하고 있다.
     // 따라서 ReviewEntity를 생성하기 위해서는 MemberEntity가 필요하다.)
-    MemberEntity memberEntity = memberRepository.findByUserId(authService.getCurrentUserId(authentication))
-        .orElseThrow(()-> new AppException(ErrorCode.USERID_NOTFOUND, "유효하지 않은 사용자입니다."));
+    String userId = ((UserDetails) authentication.getPrincipal()).getUsername();
+    MemberEntity memberEntity = (MemberEntity) authAspect.loadUserByUsername(userId);
 
     // # 게시글 저장
     ReviewEntity result = reviewRepository.save(request.toEntity(memberEntity));
@@ -64,7 +65,7 @@ public class ReviewService {
     // # 수정할 게시글의 글쓴이와 현재 접속중인 유저의 아이디가 일치하는지 확인
     // !! 부가기능 리팩토링 할것
     String authorId = reviewEntity.getMember().getUserId();
-    String curUserId = authService.getCurrentUserId(authentication);
+    String curUserId = ((UserDetails) authentication.getPrincipal()).getUsername();
     if(!authorId.equals(curUserId)){
       throw new AppException(ErrorCode.USERID_INVALID, "해당 게시글을 수정할 권한이 없습니다.");
     }
@@ -100,7 +101,7 @@ public class ReviewService {
     // # 삭제할 게시글의 글쓴이와 현재 접속중인 유저의 아이디가 일치하는지 확인
     // !! 부가기능 리팩토링 할것
     String authorId = reviewEntity.getMember().getUserId();
-    String curUserId = authService.getCurrentUserId(authentication);
+    String curUserId = ((UserDetails) authentication.getPrincipal()).getUsername();
     if(!authorId.equals(curUserId)){
       throw new AppException(ErrorCode.USERID_INVALID, "해당 게시글을 삭제할 권한이 없습니다.");
     }

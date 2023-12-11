@@ -13,5 +13,7 @@ public class ModifyPassword {
   private String oldPassword;
   /** 새 비밀번호 */
   private String newPassword;
+  /** 새 비밀번호 재입력 (확인용)*/
+  private String newPasswordConfirmation;
 }
 
